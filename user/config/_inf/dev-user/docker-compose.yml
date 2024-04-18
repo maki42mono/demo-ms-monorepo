@@ -1,0 +1,15 @@
+version: "3"
+services:
+    legion-ms-user:
+        container_name: legion-ms-user
+        user: 1000:1000
+        build:
+            context: ../../../.
+            dockerfile:  config/_inf/dev-user/Dockerfile
+        networks:
+            - legion-network
+        volumes:
+            - '../../../.:/var/www/html'
+networks:
+    legion-network:
+        external: true

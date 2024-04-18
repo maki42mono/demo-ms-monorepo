@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: legion-ms-user
+    labels:
+        app: legion-ms-user
+spec:
+    selector:
+        matchLabels:
+            app: legion-ms-user
+    replicas: 1
+    minReadySeconds: 15
+    strategy:
+        type: RollingUpdate
+        rollingUpdate:
+            maxUnavailable: 1
+            maxSurge: 1
+    template:
+        metadata:
+            labels:
+                app: legion-ms-user
+        spec:
+            containers:
+                -   image: registry.gitlab.com/legion_farm/legion_v2/microservices/user:latest
+                    imagePullPolicy: Always
+                    name: legion-ms-user
+                    ports:
+                        -   containerPort: 9000
+            imagePullSecrets:
+                -   name: regcred

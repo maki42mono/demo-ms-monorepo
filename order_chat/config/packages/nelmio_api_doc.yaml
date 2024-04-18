@@ -1,0 +1,9 @@
+nelmio_api_doc:
+    documentation:
+        info:
+            title: Order chat MS
+            description: MS for getstream chat
+            version: 1.0.0
+    areas:
+        path_patterns:
+            - ^/back-api/order-chat(?!/doc.json$)

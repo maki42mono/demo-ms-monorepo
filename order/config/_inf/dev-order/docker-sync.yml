@@ -1,0 +1,6 @@
+version: "2"
+syncs:
+  order-docker-sync:
+    src: '../../../.'
+    sync_userid: '1000'
+    sync_groupid: '1000'

@@ -1,0 +1,6 @@
+version: "2"
+syncs:
+  user-docker-sync:
+    src: '../../../.'
+    sync_userid: '1000'
+    sync_groupid: '1000'

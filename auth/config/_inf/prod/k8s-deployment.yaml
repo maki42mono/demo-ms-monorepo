@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: legion-ms-auth
+    labels:
+        app: legion-ms-auth
+spec:
+    selector:
+        matchLabels:
+            app: legion-ms-auth
+    replicas: 2
+    minReadySeconds: 15
+    strategy:
+        type: RollingUpdate
+        rollingUpdate:
+            maxUnavailable: 1
+            maxSurge: 1
+    template:
+        metadata:
+            labels:
+                app: legion-ms-auth
+        spec:
+            containers:
+                -   image: registry.gitlab.com/legion_farm/legion_v2/microservices/auth:latest
+                    imagePullPolicy: Always
+                    name: legion-ms-auth
+                    ports:
+                        -   containerPort: 9000
+            imagePullSecrets:
+                -   name: regcred

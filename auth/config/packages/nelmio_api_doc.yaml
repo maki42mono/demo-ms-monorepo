@@ -1,0 +1,9 @@
+nelmio_api_doc:
+    documentation:
+        info:
+            title: Auth MS
+            description: MS for auth
+            version: 1.0.0
+    areas:
+        path_patterns:
+            - ^/back-api/auth(?!/doc.json$)

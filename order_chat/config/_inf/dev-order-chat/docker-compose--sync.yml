@@ -1,0 +1,19 @@
+version: "3"
+services:
+    legion-ms-order-chat:
+        container_name: legion-ms-order-chat
+        user: 1000:1000
+        build:
+            context: ../../../.
+            dockerfile: config/_inf/dev-order-chat/Dockerfile
+        networks:
+            - legion-network
+        volumes:
+            - '../../../.:/var/www/html'
+networks:
+    legion-network:
+        external: true
+
+volumes:
+    order-chat-docker-sync:
+        external: true

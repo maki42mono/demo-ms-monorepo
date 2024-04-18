@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: legion-ms-order-chat
+  labels:
+    app: legion-ms-order-chat
+spec:
+  selector:
+    matchLabels:
+      app: legion-ms-order-chat
+  replicas: 1
+  minReadySeconds: 15
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: legion-ms-order-chat
+    spec:
+      containers:
+        - image: registry.gitlab.com/legion_farm/legion_v2/microservices/order_chat:staging
+          env:
+            - name: LF_API_URL
+              value: "https://api-lfc-stg.wow-carry.com"
+            - name: APP_ENV
+              value: "dev"
+            - name: STREAM_CHAT_KEY
+              value: "fr2edjyhtjv4"
+            - name: STREAM_CHAT_SECRET
+              value: "76gmx3z2bptvjvden3egw63gfdzbydhps8afqug3gsvpw3sg9rasjf8u72bfc7gf"
+          imagePullPolicy: Always
+          name: legion-ms-order-chat
+          ports:
+            - containerPort: 9000
+      imagePullSecrets:
+        - name: regcred

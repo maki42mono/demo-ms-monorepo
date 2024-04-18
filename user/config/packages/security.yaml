@@ -1,0 +1,18 @@
+security:
+    providers:
+        users_in_memory: { memory: null }
+    firewalls:
+        main:
+            pattern: ^/
+            anonymous: lazy
+            stateless: true
+            guard:
+                authenticators:
+                    - Legion\LegionBundle\Service\TokenAuthenticator
+    access_control:
+        - { path: ^/back-api/user/doc.json, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/back-api/user/auth, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/back-api/user/data, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/back-api/user/webhook/master-update, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/back-api/user, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/, roles: IS_AUTHENTICATED_FULLY }

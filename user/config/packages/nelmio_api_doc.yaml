@@ -1,0 +1,9 @@
+nelmio_api_doc:
+    documentation:
+        info:
+            title: User MS
+            description: MS for users
+            version: 1.0.0
+    areas:
+        path_patterns:
+            - ^/back-api/user(?!/doc.json$)

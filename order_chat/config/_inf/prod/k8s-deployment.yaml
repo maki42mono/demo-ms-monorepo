@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: legion-ms-order-chat
+  labels:
+    app: legion-ms-order-chat
+spec:
+  selector:
+    matchLabels:
+      app: legion-ms-order-chat
+  replicas: 1
+  minReadySeconds: 15
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: legion-ms-order-chat
+    spec:
+      containers:
+        - image: registry.gitlab.com/legion_farm/legion_v2/microservices/order_chat:latest
+          imagePullPolicy: Always
+          name: legion-ms-order-chat
+          ports:
+            - containerPort: 9000
+      imagePullSecrets:
+        - name: regcred

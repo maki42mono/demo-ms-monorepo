@@ -1,0 +1,15 @@
+version: "3"
+services:
+  legion-ms-auth:
+    container_name: legion-ms-auth
+    user: 1000:1000
+    build:
+      context: ../../../.
+      dockerfile: config/_inf/dev-auth/Dockerfile
+    networks:
+      - legion-network
+    volumes:
+      - '../../../.:/var/www/html'
+networks:
+  legion-network:
+    external: true

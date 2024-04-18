@@ -1,0 +1,57 @@
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+parameters:
+    lf_api_url: "%env(LF_API_URL)%"
+    lf_api_token: "%env(LF_API_TOKEN)%"
+    lf_chat_admin: "%env(LF_CHAT_ADMIN)%"
+    chatkit_instance_locator: "%env(CHATKIT_INSTANCE_LOCATOR)%"
+    chatkit_secret_key: "%env(CHATKIT_SECRET_KEY)%"
+    stream_chat_key: "%env(STREAM_CHAT_KEY)%"
+    stream_chat_secret: "%env(STREAM_CHAT_SECRET)%"
+
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+    # makes classes in src/ available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
+    App\:
+        resource: '../src/*'
+        exclude: '../src/{DependencyInjection,Entity,Exception,Migrations,Tests,Kernel.php}'
+
+    # controllers are imported separately to make sure services can be injected
+    # as action arguments even if you don't extend any base controller class
+    App\Controller\:
+        resource: '../src/Controller'
+        tags: ['controller.service_arguments']
+
+    # add more service definitions when explicit configuration is needed
+    # please note that last definitions always *replace* previous ones
+
+    App\Service\LegionfarmApiService:
+        arguments:
+            $apiUrl: "%lf_api_url%"
+            $apiToken: "%lf_api_token%"
+
+    App\Service\ChatkitService:
+        arguments:
+            $instanceLocator: "%chatkit_instance_locator%"
+            $key: "%chatkit_secret_key%"
+
+    App\Service\StreamChatService:
+        arguments:
+            $key: "%stream_chat_key%"
+            $secret: "%stream_chat_secret%"
+
+    App\Service\ChatService:
+        arguments:
+            $chatAdmin: "%lf_chat_admin%"
+
+    App\Controller\WebhookController:
+        arguments:
+            $xGitlabToken: "%env(GITLAB_WEBHOOK_TOKEN)%"

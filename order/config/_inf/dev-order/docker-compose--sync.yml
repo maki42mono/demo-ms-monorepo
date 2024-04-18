@@ -1,0 +1,19 @@
+version: "3"
+services:
+    legion-ms-order:
+        container_name: legion-ms-order
+        user: 1000:1000
+        build:
+            context: ../../../.
+            dockerfile: config/_inf/dev-order/Dockerfile
+        networks:
+            - legion-network
+        volumes:
+            - 'order-docker-sync:/var/www/html'
+networks:
+    legion-network:
+        external: true
+
+volumes:
+    order-docker-sync:
+        external: true

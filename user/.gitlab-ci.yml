@@ -1,0 +1,43 @@
+---
+
+image: alpine
+
+stages:
+  - package
+  - deploy
+
+include:
+  - project: 'play_with_pro/devops/pipelines'
+    ref: master
+    file:
+      - 'build.docker.app.yml'
+      - 'deploy.helm.app.yml'
+
+package:
+  stage: package
+  extends: .docker-build
+  variables:
+    DOCKERFILE_PATH: "config/_inf/prod/Dockerfile"
+    DOCKER_IMAGE_NAME: ${REGISTRY_HOST}/${CI_PROJECT_PATH}
+    DOCKER_IMAGE_TAG: ${CI_COMMIT_REF_SLUG}-${CI_COMMIT_SHORT_SHA}
+  tags:
+    - runner-lfc-staging
+
+deploy-staging:
+  extends: .deploy-helm-base-lfc-staging
+  variables:
+    NAMESPACE: lfc-staging
+    DEPLOY_DOCKER_IMAGE_NAME: ${REGISTRY_HOST}/play_with_pro/devops/docker/helm
+    DEPLOY_DOCKER_IMAGE_TAG: latest
+    DOCKER_IMAGE_NAME: ${REGISTRY_HOST}/${CI_PROJECT_PATH}
+    DOCKER_IMAGE_TAG: ${CI_COMMIT_REF_SLUG}-${CI_COMMIT_SHORT_SHA}
+    HELM_CHART_NAME: lfc-microservice-user
+    RELEASE_NAME: lfc-microservice-user
+  needs:
+    - package
+  only:
+    - staging
+    - /^DEVOPS-.*$/
+
+
+
